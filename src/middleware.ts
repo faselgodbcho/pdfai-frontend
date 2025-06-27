@@ -13,7 +13,7 @@ async function isTokenValid(token: string): Promise<boolean> {
       body: JSON.stringify({ token }),
     });
     return res.ok;
-  } catch(err) {
+  } catch (err) {
     console.error('Token verification failed:', err);
     return false;
   }
@@ -26,15 +26,16 @@ export async function middleware(request: NextRequest) {
   const isProtected = protectedPaths.includes(pathname);
   const isAuthRoute = authRoutes.includes(pathname);
 
-
   if (isProtected) {
     if (!token || !(await isTokenValid(token))) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
-  if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/', request.url));
+  if (isAuthRoute) {
+    if (token && (await isTokenValid(token))) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
   }
 
   return NextResponse.next();
