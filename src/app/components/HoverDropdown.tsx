@@ -17,8 +17,7 @@ export default function HoverDropdown({
 }) {
   return (
     <SidebarMenuButton asChild>
-      {/* unique group for each item */}
-      <div className="flex items-center justify-between group w-full px-3 py-2 rounded hover:bg-muted transition-colors">
+      <div className="flex items-center group justify-between w-full px-3 py-4 rounded hover:bg-muted transition-colors">
         <a href={item.url} className="flex-1">
           <span>{item.title}</span>
         </a>
@@ -26,15 +25,15 @@ export default function HoverDropdown({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={(e) => e.stopPropagation()} // optional: prevent entire button click
+              className="border-none outline-none cursor-pointer"
+              onClick={(e) => e.stopPropagation()}
             >
               <EllipsisVertical size={16} />
             </button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent side="right">
-            <DropdownMenuItem className="flex items-center gap-2">
+            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
               <Trash2 size={16} />
               Delete
             </DropdownMenuItem>

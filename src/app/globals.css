@@ -123,3 +123,12 @@
 .auth-input {
   @apply h-11 shadow-none text-[15px] font-inter rounded-3xl px-5 py-4 shadow-[#FF7F50] 
 }
+
+.scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

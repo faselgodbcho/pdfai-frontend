@@ -55,12 +55,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             ? {
                 email: values.email,
                 password: values.password,
+                stay_logged_in: values.stayLoggedIn,
               }
             : {
                 username: values.username,
                 email: values.email,
                 password: values.password,
                 confirm_password: values.confirmPassword,
+                stay_logged_in: values.stayLoggedIn,
               }
         ),
       });
