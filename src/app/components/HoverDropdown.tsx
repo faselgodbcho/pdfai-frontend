@@ -22,7 +22,7 @@ export default function HoverDropdown({
           <span>{item.title}</span>
         </a>
 
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <button
               className="border-none outline-none cursor-pointer"
@@ -32,7 +32,7 @@ export default function HoverDropdown({
             </button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent side="right">
+          <DropdownMenuContent side="bottom" align="start">
             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
               <Trash2 size={16} />
               Delete

@@ -4,30 +4,38 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Settings2 } from "lucide-react";
+import { Settings, Settings2, LogOut } from "lucide-react";
+
+const items = [
+  {
+    title: "Logout",
+    icon: <LogOut />,
+  },
+  {
+    title: "Settings",
+    icon: <Settings />,
+  },
+];
 
 export default function AppHeader() {
   return (
-    <div className="max-w-full relative">
-      <header className="w-full flex items-center justify-between px-6 py-4 bg-white shadow">
-        <SidebarTrigger className="hover:bg-white cursor-pointer" />
+    <header className="w-full flex items-center sticky top-0 z-10 justify-between px-6 py-4 bg-white shadow">
+      <SidebarTrigger className="hover:bg-white cursor-pointer" />
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger>
+          <Settings2 className="stroke-black/80 cursor-pointer" />{" "}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="bottom" align="end">
+          {items.map((item) => (
+            <DropdownMenuItem className="cursor-pointer gap-2">
+              {item.icon}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Settings2 className="stroke-black/80 cursor-pointer" />{" "}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end">
-            <DropdownMenuItem className="cursor-pointer">
-              Github
+              <span>{item.title}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </header>
-    </div>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </header>
   );
 }
