@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:insecure": "NODE_TLS_REJECT_UNAUTHORIZED=0 npm run dev:https",
+    "dev:https": "NODE_ENV=development node server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
