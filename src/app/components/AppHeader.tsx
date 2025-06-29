@@ -28,7 +28,7 @@ export default function AppHeader() {
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="end">
           {items.map((item) => (
-            <DropdownMenuItem className="cursor-pointer gap-2">
+            <DropdownMenuItem className="cursor-pointer gap-2" key={item.title}>
               {item.icon}
 
               <span>{item.title}</span>

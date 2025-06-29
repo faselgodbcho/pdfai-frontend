@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { SidebarMenuButton } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export default function HoverDropdown({
   item,
@@ -18,9 +19,9 @@ export default function HoverDropdown({
   return (
     <SidebarMenuButton asChild>
       <div className="flex items-center group justify-between w-full px-3 py-4 rounded hover:bg-muted transition-colors">
-        <a href={item.url} className="flex-1">
+        <Link href={`/c/${item.url}`} className="flex-1">
           <span>{item.title}</span>
-        </a>
+        </Link>
 
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>

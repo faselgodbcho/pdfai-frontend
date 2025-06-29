@@ -16,6 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import HoverDropdown from "./HoverDropdown";
+import SidebarChatSessions from "./SidebarChatSessions";
 
 const items = [
   {
@@ -55,23 +56,7 @@ export function AppSidebar() {
           <SidebarGroupLabel className="text-[15px] mb-1 font-light">
             Chats
           </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.id} className="mb-1">
-                  <HoverDropdown
-                    item={{
-                      title:
-                        item.title.length > 25
-                          ? item.title.slice(0, 25) + "..."
-                          : item.title,
-                      url: item.url,
-                    }}
-                  />
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
+          <SidebarChatSessions />
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
