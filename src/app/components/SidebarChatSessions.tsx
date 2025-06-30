@@ -5,10 +5,9 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { getUserChatSessions, refreshAccessToken } from "@/lib/data";
+import { getUserChatSessions, refreshAccessToken } from "@/lib/userActions";
 import HoverDropdown from "./HoverDropdown";
 import { useEffect, useState } from "react";
-import { Content } from "next/font/google";
 
 export default function SidebarChatSessions() {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -69,7 +68,7 @@ export default function SidebarChatSessions() {
                   session.pdf.title.length > 25
                     ? session.pdf.title.slice(0, 25) + "..."
                     : session.pdf.title,
-                url: `/${session.id}`,
+                id: `${session.id}`,
               }}
             />
           </SidebarMenuItem>

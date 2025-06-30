@@ -14,12 +14,12 @@ import Link from "next/link";
 export default function HoverDropdown({
   item,
 }: {
-  item: { title: string; url: string };
+  item: { title: string; id: string };
 }) {
   return (
     <SidebarMenuButton asChild>
       <div className="flex items-center group justify-between w-full px-3 py-4 rounded hover:bg-muted transition-colors">
-        <Link href={`/c/${item.url}`} className="flex-1">
+        <Link href={`c/${item.id}`} className="flex-1">
           <span>{item.title}</span>
         </Link>
 

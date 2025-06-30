@@ -1,22 +1,11 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Settings, Settings2, LogOut } from "lucide-react";
-
-const items = [
-  {
-    title: "Logout",
-    icon: <LogOut />,
-  },
-  {
-    title: "Settings",
-    icon: <Settings />,
-  },
-];
+import { Settings2 } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 
 export default function AppHeader() {
   return (
@@ -26,14 +15,8 @@ export default function AppHeader() {
         <DropdownMenuTrigger>
           <Settings2 className="stroke-black/80 cursor-pointer" />{" "}
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" align="end">
-          {items.map((item) => (
-            <DropdownMenuItem className="cursor-pointer gap-2" key={item.title}>
-              {item.icon}
-
-              <span>{item.title}</span>
-            </DropdownMenuItem>
-          ))}
+        <DropdownMenuContent side="bottom" align="end" className="p-2">
+          <LogoutButton />
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

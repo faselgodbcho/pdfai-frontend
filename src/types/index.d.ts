@@ -8,7 +8,3 @@ type Session = {
     title: string;
   };
 };
-
-type GetUserSessionsResult =
-  | { data: Session[]; error: null }
-  | { data: null; error: string };

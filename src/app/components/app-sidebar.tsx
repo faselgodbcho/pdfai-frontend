@@ -15,28 +15,15 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 
-import HoverDropdown from "./HoverDropdown";
 import SidebarChatSessions from "./SidebarChatSessions";
-
-const items = [
-  {
-    id: "1",
-    title: "The i3 Guide that no one on this planet",
-    url: "#",
-  },
-  {
-    id: "2",
-    title: "The i3 Guide that no one on this planet",
-    url: "#",
-  },
-];
 
 export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-row items-center justify-between px-6 py-5">
         <Link href="/" className="text-[23px] font-extrabold text-black/80">
-          PDF AI
+          <span className="text-primary">PDF</span>{" "}
+          <span className="text-black/70">AI</span>
         </Link>
       </SidebarHeader>
       <SidebarGroupContent>
