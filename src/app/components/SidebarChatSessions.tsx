@@ -5,46 +5,56 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { getUserChatSessions, refreshAccessToken } from "@/lib/userActions";
 import HoverDropdown from "./HoverDropdown";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/context/AuthContext";
+import { useFetchWithAuth } from "@/app/hooks/useFetchWithAuth";
+import { toast } from "sonner";
 
 export default function SidebarChatSessions() {
+  const fetchWithAuth = useFetchWithAuth();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [errMessage, setErrMessage] = useState<string | null>("");
+  const [isError, setIsError] = useState<boolean>(false);
+  const { accessToken, refreshAccessToken } = useAuth();
 
   useEffect(() => {
-    const initialize = async () => {
+    if (!accessToken) return;
+
+    const fetchChatSessions = async () => {
       setLoading(true);
 
       try {
-        const { token, error } = await refreshAccessToken();
-        if (error || !token?.access)
-          throw new Error(error || "Failed to fetch token");
+        const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+        const sessions: Session[] = await fetchWithAuth(
+          `${API_BASE_URL}/sessions`,
+          {
+            method: "GET",
+          }
+        );
 
-        const { data: sessionData, error: sessionError } =
-          await getUserChatSessions(token.access);
-
-        if (sessionError || !sessionData) throw new Error(sessionError);
-        setSessions(sessionData);
-        setErrMessage(null);
+        setSessions(sessions);
+        setIsError(false);
       } catch (err) {
         console.error("Sidebar init error:", err);
-        const message = err instanceof Error ? err.message : String(err);
-        setErrMessage(message);
+        toast.error("Sidebar Error", {
+          description: "An Error occurred while fetching chats.",
+        });
+        setIsError(true);
       } finally {
         setLoading(false);
       }
     };
 
-    initialize();
-  }, []);
+    fetchChatSessions();
+  }, [accessToken, refreshAccessToken]);
 
-  if (errMessage) {
+  if (isError) {
     return (
       <SidebarGroupContent>
-        <p className="p-4 text-gray-500">{errMessage}</p>
+        <p className="p-4 text-gray-500">
+          Failed to load chat sessions. Refreshing the page might help.
+        </p>
       </SidebarGroupContent>
     );
   }
@@ -53,6 +63,16 @@ export default function SidebarChatSessions() {
     return (
       <SidebarGroupContent>
         <p className="p-4 text-center text-gray-500">Loading chats…</p>
+      </SidebarGroupContent>
+    );
+  }
+
+  if (sessions.length === 0) {
+    return (
+      <SidebarGroupContent>
+        <p className="p-4 text-gray-500">
+          No chat sessions yet. Upload a PDF to start.
+        </p>
       </SidebarGroupContent>
     );
   }

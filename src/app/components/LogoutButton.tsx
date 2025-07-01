@@ -1,13 +1,35 @@
 "use client";
 
-import { logoutUser } from "@/lib/userActions";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
+import { useFetchWithAuth } from "@/app/hooks/useFetchWithAuth";
 
 export default function LogoutButton() {
+  const fetchWithAuth = useFetchWithAuth();
+  const { accessToken, setAccessToken } = useAuth();
   const router = useRouter();
+
+  const logoutUser = async () => {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+    try {
+      const data: { message: string } = await fetchWithAuth(
+        `${API_BASE_URL}/auth/logout/`,
+        {
+          method: "POST",
+        }
+      );
+
+      setAccessToken(null);
+      return { data, error: null };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setAccessToken(null);
+      return { data: null, error: message };
+    }
+  };
 
   const handleLogout = async (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -22,11 +44,9 @@ export default function LogoutButton() {
 
       router.push("/login");
     } catch (err: any) {
-      const message = err instanceof Error ? err.message : "Please try again.";
-
       console.error("Logout error:", err);
       toast.error("Logout Error", {
-        description: message,
+        description: "An Error occurred while logging out.",
       });
     }
   };
