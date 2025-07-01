@@ -6,51 +6,18 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import HoverDropdown from "./HoverDropdown";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/app/context/AuthContext";
-import { useFetchWithAuth } from "@/app/hooks/useFetchWithAuth";
-import { toast } from "sonner";
+import { useChatSessions } from "@/app/context/ChatSessionContext";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function SidebarChatSessions() {
-  const fetchWithAuth = useFetchWithAuth();
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
-  const { accessToken, refreshAccessToken } = useAuth();
+  const { sessions, loading, isError, removeSession } = useChatSessions();
 
-  useEffect(() => {
-    if (!accessToken) return;
+  const pathname = usePathname();
 
-    const fetchChatSessions = async () => {
-      setLoading(true);
-
-      try {
-        const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-        const res = await fetchWithAuth(`${API_BASE_URL}/sessions`, {
-          method: "GET",
-        });
-
-        const sessions: Session[] = await res.json();
-
-        setSessions(sessions);
-        setIsError(false);
-      } catch (err) {
-        console.error("Sidebar init error:", err);
-        toast.error("Sidebar Error", {
-          description: "An Error occurred while fetching chats.",
-        });
-        setIsError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChatSessions();
-  }, [accessToken, refreshAccessToken]);
-
-  const handleDeleteSession = (id: string) => {
-    setSessions((prev) => prev.filter((session) => String(session.id) !== id));
-  };
+  const currentSessionId = pathname.startsWith("/c/")
+    ? pathname.split("/c/")[1]
+    : null;
 
   if (isError) {
     return (
@@ -84,7 +51,14 @@ export default function SidebarChatSessions() {
     <SidebarGroupContent>
       <SidebarMenu>
         {sessions.map((session) => (
-          <SidebarMenuItem key={session.id} className="mb-1">
+          <SidebarMenuItem
+            key={session.id}
+            className={cn(
+              "mb-1",
+              currentSessionId === String(session.id) &&
+                "bg-muted rounded-md border border-black/10"
+            )}
+          >
             <HoverDropdown
               item={{
                 title:
@@ -93,7 +67,7 @@ export default function SidebarChatSessions() {
                     : session.pdf.title,
                 id: `${session.id}`,
               }}
-              onDelete={handleDeleteSession}
+              onDelete={removeSession}
             />
           </SidebarMenuItem>
         ))}

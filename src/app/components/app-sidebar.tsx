@@ -51,9 +51,9 @@ export function AppSidebar() {
           <Separator className="mb-2" />
           <SidebarMenuItem>
             <a
-              href="https://github.com/faselgodbcho/pdf-ai"
+              href="https://github.com/faselgodbcho/pdfai-frontend"
               target="_blank"
-              className="flex items-center gap-4 px-6 py-2 hover:bg-muted transition-colors rounded-xl"
+              className="flex items-center gap-4 px-6 py-2 hover:bg-black/5 transition-colors rounded-xl"
             >
               <Github size={28} />
 

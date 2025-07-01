@@ -46,7 +46,7 @@ export default function HoverDropdown({
   return (
     <SidebarMenuButton asChild>
       <div className="flex items-center group justify-between w-full px-3 py-4 rounded hover:bg-muted transition-colors">
-        <Link href={`c/${item.id}`} className="flex-1">
+        <Link href={`/c/${item.id}`} className="flex-1">
           <span>{item.title}</span>
         </Link>
 

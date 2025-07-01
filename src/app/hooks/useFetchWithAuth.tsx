@@ -38,10 +38,15 @@ export function useFetchWithAuth() {
     }
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(
-        `Request failed: ${res.status} ${res.statusText} - ${errorText}`
-      );
+      const contentType = res.headers.get("content-type") || "";
+
+      if (contentType.includes("application/json")) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Upload failed");
+      } else {
+        const fallbackText = await res.text();
+        throw new Error(fallbackText || "Unknown error");
+      }
     }
 
     return res;
