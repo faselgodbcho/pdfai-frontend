@@ -9,18 +9,17 @@ import { useFetchWithAuth } from "@/app/hooks/useFetchWithAuth";
 
 export default function LogoutButton() {
   const fetchWithAuth = useFetchWithAuth();
-  const { accessToken, setAccessToken } = useAuth();
+  const { setAccessToken } = useAuth();
   const router = useRouter();
 
   const logoutUser = async () => {
     const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
     try {
-      const data: { message: string } = await fetchWithAuth(
-        `${API_BASE_URL}/auth/logout/`,
-        {
-          method: "POST",
-        }
-      );
+      const res = await fetchWithAuth(`${API_BASE_URL}/auth/logout/`, {
+        method: "POST",
+      });
+
+      const data: { message: string } = await res.json();
 
       setAccessToken(null);
       return { data, error: null };

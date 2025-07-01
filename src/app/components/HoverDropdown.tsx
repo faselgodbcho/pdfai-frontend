@@ -10,12 +10,39 @@ import {
 
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useFetchWithAuth } from "../hooks/useFetchWithAuth";
+import { toast } from "sonner";
 
 export default function HoverDropdown({
   item,
+  onDelete,
 }: {
   item: { title: string; id: string };
+  onDelete: (id: string) => void;
 }) {
+  const fetchWithAuth = useFetchWithAuth();
+
+  const handleDelete = async (id: string) => {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+
+    try {
+      await fetchWithAuth(`${API_BASE_URL}/sessions/${id}`, {
+        method: "DELETE",
+      });
+
+      toast.success("Deleted Successfully", {
+        description: `Chat ${id} deleted successfully.`,
+      });
+
+      onDelete(id);
+    } catch (err: any) {
+      console.error("Deletion Error:", err);
+      toast.error("Logout Error", {
+        description: `An Error occurred while deleting chat ${id}.`,
+      });
+    }
+  };
+
   return (
     <SidebarMenuButton asChild>
       <div className="flex items-center group justify-between w-full px-3 py-4 rounded hover:bg-muted transition-colors">
@@ -34,7 +61,10 @@ export default function HoverDropdown({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent side="bottom" align="start">
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+            <DropdownMenuItem
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={(e) => handleDelete(item.id)}
+            >
               <Trash2 size={16} />
               Delete
             </DropdownMenuItem>

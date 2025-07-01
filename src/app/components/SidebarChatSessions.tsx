@@ -26,12 +26,11 @@ export default function SidebarChatSessions() {
 
       try {
         const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-        const sessions: Session[] = await fetchWithAuth(
-          `${API_BASE_URL}/sessions`,
-          {
-            method: "GET",
-          }
-        );
+        const res = await fetchWithAuth(`${API_BASE_URL}/sessions`, {
+          method: "GET",
+        });
+
+        const sessions: Session[] = await res.json();
 
         setSessions(sessions);
         setIsError(false);
@@ -48,6 +47,10 @@ export default function SidebarChatSessions() {
 
     fetchChatSessions();
   }, [accessToken, refreshAccessToken]);
+
+  const handleDeleteSession = (id: string) => {
+    setSessions((prev) => prev.filter((session) => String(session.id) !== id));
+  };
 
   if (isError) {
     return (
@@ -90,6 +93,7 @@ export default function SidebarChatSessions() {
                     : session.pdf.title,
                 id: `${session.id}`,
               }}
+              onDelete={handleDeleteSession}
             />
           </SidebarMenuItem>
         ))}

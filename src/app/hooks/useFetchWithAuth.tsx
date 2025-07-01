@@ -1,13 +1,12 @@
-// utils/useFetchWithAuth.ts
 import { useAuth } from "@/app/context/AuthContext";
 
 export function useFetchWithAuth() {
   const { accessToken, refreshAccessToken, setAccessToken } = useAuth();
 
-  async function fetchWithAuth<T = any>(
+  async function fetchWithAuth(
     input: RequestInfo,
     init?: RequestInit
-  ): Promise<T> {
+  ): Promise<Response> {
     if (!accessToken) throw new Error("No access token available");
 
     const authHeaders = new Headers(init?.headers || {});
@@ -45,8 +44,7 @@ export function useFetchWithAuth() {
       );
     }
 
-    // Return parsed response
-    return res.json() as Promise<T>;
+    return res;
   }
 
   return fetchWithAuth;
