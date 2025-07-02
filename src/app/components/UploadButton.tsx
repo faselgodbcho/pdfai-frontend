@@ -12,7 +12,7 @@ export default function UploadButton() {
   const fetchWithAuth = useFetchWithAuth();
   const router = useRouter();
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const { refreshSessions } = useChatSessions();
+  const { addSession } = useChatSessions();
 
   const uploadPDF = async (file: File) => {
     const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -31,9 +31,10 @@ export default function UploadButton() {
       const data = await res.json();
       const sessionId = data.session_id;
 
-      await refreshSessions();
+      addSession({ id: sessionId, pdf: { title: data.title } });
 
-      toast.success("PDF uploaded successfully!");
+      toast.success(data.detail || "PDF uploaded successfully!");
+
       router.push(`/c/${sessionId}`);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -47,11 +48,11 @@ export default function UploadButton() {
     <label
       htmlFor="file-upload"
       className={cn(
-        "inline-flex items-center text-base px-4 py-2 gap-2 cursor-pointer rounded-md bg-primary text-white hover:bg-primary/90 transition select-none",
+        "inline-flex items-center text-base px-4 py-2 gap-2 cursor-pointer rounded-full bg-primary text-white hover:bg-primary/90 transition select-none",
         isUploading && "cursor-not-allowed opacity-70"
       )}
     >
-      {isUploading ? (
+      {isUploading && (
         <svg
           className="animate-spin w-5 h-5 mr-2 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -73,8 +74,6 @@ export default function UploadButton() {
             d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
           />
         </svg>
-      ) : (
-        <Sparkles className="w-[18px] h-[18px]" />
       )}
       {isUploading ? "Uploading..." : "Upload a PDF to Get Started"}
       <input

@@ -9,15 +9,25 @@ import HoverDropdown from "./HoverDropdown";
 import { useChatSessions } from "@/app/context/ChatSessionContext";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function SidebarChatSessions() {
-  const { sessions, loading, isError, removeSession } = useChatSessions();
+  const { sessions, loading, isError, setSessions } = useChatSessions();
 
   const pathname = usePathname();
+  const router = useRouter();
 
   const currentSessionId = pathname.startsWith("/c/")
     ? pathname.split("/c/")[1]
     : null;
+
+  const removeSession = (id: string) => {
+    setSessions((prev) => prev.filter((s) => String(s.id) !== id));
+
+    if (currentSessionId === id) {
+      router.push("/");
+    }
+  };
 
   if (isError) {
     return (
@@ -40,7 +50,7 @@ export default function SidebarChatSessions() {
   if (sessions.length === 0) {
     return (
       <SidebarGroupContent>
-        <p className="p-4 text-gray-500">
+        <p className="px-2 py-1 text-gray-500">
           No chat sessions yet. Upload a PDF to start.
         </p>
       </SidebarGroupContent>

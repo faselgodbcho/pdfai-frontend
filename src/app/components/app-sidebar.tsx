@@ -21,9 +21,9 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-row items-center justify-between px-6 py-5">
-        <Link href="/" className="text-[23px] font-extrabold text-black/80">
-          <span className="text-primary">PDF</span>{" "}
-          <span className="text-black/70">AI</span>
+        <Link href="/" className="text-[23px] font-extrabold">
+          <span className="text-black/70">PDF</span>
+          <span className="text-primary"> AI</span>{" "}
         </Link>
       </SidebarHeader>
       <SidebarGroupContent>
@@ -31,8 +31,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/" className="py-4">
-                <SquarePen />
-                <span className="text-gray-80">New Chat</span>
+                <SquarePen className="text-gray-700" />
+                <span className="text-gray-700">New Chat</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -58,7 +58,9 @@ export function AppSidebar() {
               <Github size={28} />
 
               <span>
-                <p className="text-[17px] font-semibold">Source Code</p>
+                <p className="text-[17px] font-semibold text-black/80">
+                  Source Code
+                </p>
                 <p className="text-xs text-gray-500">
                   View the project repository on GitHub
                 </p>

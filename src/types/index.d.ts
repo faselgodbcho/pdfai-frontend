@@ -1,9 +1,10 @@
 type AuthMode = "login" | "register";
 
+type Message = {};
+
 type Session = {
-  id: number;
-  sender: "user" | "ai";
-  content: string;
+  id: string;
+  messages?: Message[];
   pdf: {
     title: string;
   };

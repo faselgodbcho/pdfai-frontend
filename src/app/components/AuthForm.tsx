@@ -74,7 +74,6 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
       router.push("/");
     } catch (err: any) {
-      console.error("Auth error:", err);
       toast.error("Authentication Error", {
         description: err.message || "Please try again.",
       });

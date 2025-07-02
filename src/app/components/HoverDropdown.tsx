@@ -37,7 +37,7 @@ export default function HoverDropdown({
       onDelete(id);
     } catch (err: any) {
       console.error("Deletion Error:", err);
-      toast.error("Logout Error", {
+      toast.error("Deletion Error", {
         description: `An Error occurred while deleting chat ${id}.`,
       });
     }

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 interface ChatSessionContextType {
   sessions: Session[];
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
   loading: boolean;
   isError: boolean;
   refreshSessions: () => Promise<void>;
@@ -73,6 +74,7 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
         refreshSessions,
         addSession,
         removeSession,
+        setSessions,
       }}
     >
       {children}
