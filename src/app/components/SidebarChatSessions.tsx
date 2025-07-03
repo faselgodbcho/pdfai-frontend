@@ -7,9 +7,8 @@ import {
 } from "@/components/ui/sidebar";
 import HoverDropdown from "./HoverDropdown";
 import { useChatSessions } from "@/app/context/ChatSessionContext";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 
 export default function SidebarChatSessions() {
   const { sessions, loading, isError, setSessions } = useChatSessions();

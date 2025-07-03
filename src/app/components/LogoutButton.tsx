@@ -42,7 +42,7 @@ export default function LogoutButton() {
         throw new Error(error || "Something went wrong while logging out.");
 
       router.push("/login");
-    } catch (err: any) {
+    } catch (err) {
       console.error("Logout error:", err);
       toast.error("Logout Error", {
         description: "An Error occurred while logging out.",

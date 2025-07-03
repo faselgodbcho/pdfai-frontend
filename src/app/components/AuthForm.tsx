@@ -39,43 +39,52 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
   async function onSubmit(values: z.infer<typeof schema>) {
     try {
-      const endpoint =
-        mode === "login"
-          ? `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/token/`
-          : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/register/`;
+      const endpoint = mode === "login" ? `/auth/token/` : `/auth/register/`;
 
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(
-          mode === "login"
-            ? {
-                email: values.email,
-                password: values.password,
-                stay_logged_in: values.stayLoggedIn,
-              }
-            : {
-                username: values.username,
-                email: values.email,
-                password: values.password,
-                confirm_password: values.confirmPassword,
-                stay_logged_in: values.stayLoggedIn,
-              }
-        ),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(
+            mode === "login"
+              ? {
+                  email: values.email,
+                  password: values.password,
+                  stay_logged_in: values.stayLoggedIn,
+                }
+              : {
+                  username: values.username,
+                  email: values.email,
+                  password: values.password,
+                  confirm_password: values.confirmPassword,
+                  stay_logged_in: values.stayLoggedIn,
+                }
+          ),
+        }
+      );
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.detail || res.statusText);
+        const contentType = res.headers.get("content-type") || "";
+
+        if (contentType.includes("application/json")) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Upload failed");
+        } else {
+          const fallbackText = await res.text();
+          throw new Error(fallbackText || "Unknown error");
+        }
       }
 
       router.push("/");
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error("Authentication Error", err);
       toast.error("Authentication Error", {
-        description: err.message || "Please try again.",
+        description: message || "Please try again.",
       });
     }
   }

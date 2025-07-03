@@ -6,6 +6,7 @@ const authRoutes = ["/login", "/register"];
 
 async function isTokenValid(token: string): Promise<boolean> {
   try {
+    console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/token/verify/`,
       {

@@ -1,6 +1,5 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
 import { useFetchWithAuth } from "../hooks/useFetchWithAuth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

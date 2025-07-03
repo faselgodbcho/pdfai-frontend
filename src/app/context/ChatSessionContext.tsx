@@ -6,6 +6,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from "react";
 import { useFetchWithAuth } from "@/app/hooks/useFetchWithAuth";
 import { useAuth } from "./AuthContext";
@@ -30,7 +31,7 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  const refreshSessions = async () => {
+  const refreshSessions = useCallback(async () => {
     if (!accessToken) return;
 
     setLoading(true);
@@ -51,7 +52,7 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [accessToken, fetchWithAuth]);
 
   const addSession = (session: Session) => {
     setSessions((prev) => [session, ...prev]);
@@ -63,7 +64,7 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refreshSessions();
-  }, [accessToken]);
+  }, [accessToken, refreshSessions]);
 
   return (
     <ChatSessionContext.Provider

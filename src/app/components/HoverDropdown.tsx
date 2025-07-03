@@ -35,7 +35,7 @@ export default function HoverDropdown({
       });
 
       onDelete(id);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Deletion Error:", err);
       toast.error("Deletion Error", {
         description: `An Error occurred while deleting chat ${id}.`,
@@ -63,7 +63,7 @@ export default function HoverDropdown({
           <DropdownMenuContent side="bottom" align="start">
             <DropdownMenuItem
               className="flex items-center gap-2 cursor-pointer"
-              onClick={(e) => handleDelete(item.id)}
+              onClick={() => handleDelete(item.id)}
             >
               <Trash2 size={16} />
               Delete
