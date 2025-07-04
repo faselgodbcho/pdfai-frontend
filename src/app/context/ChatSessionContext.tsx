@@ -52,7 +52,7 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [accessToken, fetchWithAuth]);
+  }, [accessToken]);
 
   const addSession = (session: Session) => {
     setSessions((prev) => [session, ...prev]);

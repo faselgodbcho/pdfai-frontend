@@ -53,7 +53,7 @@ export default function Session() {
     if (currentSessionId) {
       fetchChatMessages();
     }
-  }, [accessToken, currentSessionId, router, fetchWithAuth]);
+  }, [accessToken, currentSessionId, router]);
 
   return (
     <main className="flex flex-col bg-background h-[calc(100vh-60px)]">

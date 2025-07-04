@@ -23,13 +23,14 @@ export default function ChatInputBox({
     ? pathname.split("/c/")[1]
     : null;
 
-  useEffect(() => {
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     const controller = abortControllerRef.current;
+  //     if (controller && !controller.signal.aborted) {
+  //       controller.abort();
+  //     }
+  //   };
+  // }, [pathname]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
