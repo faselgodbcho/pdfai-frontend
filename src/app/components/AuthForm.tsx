@@ -72,12 +72,16 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
         if (contentType.includes("application/json")) {
           const errorData = await res.json();
-          throw new Error(errorData || "Upload failed");
+          throw new Error(
+            errorData.detail || errorData.error || "Upload failed"
+          );
         } else {
           const fallbackText = await res.text();
           throw new Error(fallbackText || "Unknown error");
         }
       }
+
+      console.log("redirect");
 
       router.push("/");
     } catch (err) {
