@@ -8,8 +8,6 @@ import {
   useEffect,
 } from "react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL!;
-
 type AuthContextType = {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
@@ -32,14 +30,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshAccessToken = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/token/refresh/`, {
+      const res = await fetch(`/api/auth/refresh/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         cache: "no-store",
       });
 
-      if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        const errMsg =
+          errorData?.error ||
+          errorData?.detail ||
+          `Error ${res.status}: ${res.statusText}`;
+        throw new Error(errMsg);
+      }
 
       const { access }: { access: string } = await res.json();
       setAccessToken(access);
