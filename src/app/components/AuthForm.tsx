@@ -40,6 +40,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   });
 
   async function onSubmit(values: z.infer<typeof schema>) {
+    setAuthLoading(true);
     try {
       const modeParam = mode === "login" ? "login" : "register";
 
@@ -87,6 +88,8 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       toast.error("Authentication Error", {
         description: message || "Please try again.",
       });
+    } finally {
+      setAuthLoading(false);
     }
   }
 
