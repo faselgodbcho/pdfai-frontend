@@ -13,11 +13,8 @@ export default function LogoutButton() {
   const router = useRouter();
 
   const logoutUser = async () => {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
     try {
-      const res = await fetchWithAuth(`${API_BASE_URL}/auth/logout/`, {
-        method: "POST",
-      });
+      const res = await fetchWithAuth("/api/auth/logout/", { method: "POST" });
 
       const data: { message: string } = await res.json();
 

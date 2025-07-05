@@ -41,31 +41,30 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     try {
       const endpoint = mode === "login" ? `/auth/token/` : `/auth/register/`;
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${endpoint}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(
-            mode === "login"
-              ? {
-                  email: values.email,
-                  password: values.password,
-                  stay_logged_in: values.stayLoggedIn,
-                }
-              : {
-                  username: values.username,
-                  email: values.email,
-                  password: values.password,
-                  confirm_password: values.confirmPassword,
-                  stay_logged_in: values.stayLoggedIn,
-                }
-          ),
-        }
-      );
+      const modeParam = mode === "login" ? "login" : "register";
+
+      const res = await fetch(`/api/auth?mode=${modeParam}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(
+          mode === "login"
+            ? {
+                email: values.email,
+                password: values.password,
+                stay_logged_in: values.stayLoggedIn,
+              }
+            : {
+                username: values.username,
+                email: values.email,
+                password: values.password,
+                confirm_password: values.confirmPassword,
+                stay_logged_in: values.stayLoggedIn,
+              }
+        ),
+      });
 
       if (!res.ok) {
         const contentType = res.headers.get("content-type") || "";
@@ -80,8 +79,6 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
           throw new Error(fallbackText || "Unknown error");
         }
       }
-
-      console.log("redirect");
 
       router.push("/");
     } catch (err) {
