@@ -11,12 +11,14 @@ type SessionChatMessagesProps = {
   loading: boolean;
   messages: Message[];
   displayMessage: boolean;
+  isChatting: boolean;
 };
 
 export default function SessionChatMessages({
   loading,
   messages,
   displayMessage,
+  isChatting,
 }: SessionChatMessagesProps) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -29,7 +31,7 @@ export default function SessionChatMessages({
       <ScrollArea className="w-full h-full">
         {loading ? (
           <div className="max-w-3xl mx-auto space-y-4 pt-8">
-            <div className="flex justify-end px-3 py-2">
+            {/* <div className="flex justify-end px-3 py-2">
               <Skeleton className="h-9 w-40 rounded-xl bg-black/5" />
             </div>
             <div className="flex justify-start px-3 py-2">
@@ -40,7 +42,7 @@ export default function SessionChatMessages({
             </div>
             <div className="flex justify-start px-3 py-2">
               <Skeleton className="h-20 w-md rounded-xl bg-black/5" />
-            </div>
+            </div> */}
           </div>
         ) : messages.length === 0 && displayMessage ? (
           <div className="max-w-3xl mx-auto pt-16 text-center text-muted-foreground text-sm">
@@ -60,7 +62,7 @@ export default function SessionChatMessages({
                   className={cn(
                     "px-4 py-2 rounded-xl whitespace-pre-wrap",
                     msg.sender === "user"
-                      ? "bg-muted text-foreground max-w-lg"
+                      ? "bg-[#e9e9e980] text-foreground max-w-lg"
                       : "text-foreground max-w-3xl"
                   )}
                 >
@@ -88,6 +90,14 @@ export default function SessionChatMessages({
                 </div>
               </div>
             ))}
+
+            {isChatting && (
+              <div className="flex gap-3 text-base px-3 py-2 justify-start">
+                <div className="flex items-center justify-start h-6">
+                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-ping-dot" />
+                </div>
+              </div>
+            )}
           </div>
         )}
         <div ref={scrollRef} />

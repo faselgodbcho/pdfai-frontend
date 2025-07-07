@@ -12,6 +12,7 @@ export default function Session() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [displayMessage, setDisplayMessage] = useState(false);
+  const [isChatting, setIsChatting] = useState(false);
 
   const fetchWithAuth = useFetchWithAuth();
   const pathname = usePathname();
@@ -62,10 +63,15 @@ export default function Session() {
           messages={messages}
           loading={loading}
           displayMessage={displayMessage}
+          isChatting={isChatting}
         />
       </div>
 
-      <ChatInputBox updateMessages={setMessages} />
+      <ChatInputBox
+        updateMessages={setMessages}
+        isChatting={isChatting}
+        setIsChatting={setIsChatting}
+      />
     </main>
   );
 }

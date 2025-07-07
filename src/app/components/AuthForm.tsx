@@ -19,7 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const [authLoading, setAuthLoading] = useState(false);
@@ -213,10 +212,8 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
         <Button
           type="submit"
-          className={cn(
-            "w-full py-5 px-4 text-white rounded-3xl cursor-pointer",
-            authLoading ? "bg-primary/80" : "bg-primary"
-          )}
+          className="w-full py-5 px-4 text-white rounded-3xl cursor-pointer bg-primary"
+          disabled={authLoading}
         >
           {mode === "login" ? "Sign In" : "Sign Up"}
         </Button>

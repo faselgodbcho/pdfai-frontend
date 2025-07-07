@@ -9,13 +9,16 @@ import { toast } from "sonner";
 
 export default function ChatInputBox({
   updateMessages,
+  isChatting,
+  setIsChatting,
 }: {
   updateMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  isChatting: boolean;
+  setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const fetchWithAuth = useFetchWithAuth();
 
   const [prompt, setPrompt] = useState<string>("");
-  const [isSending, setIsSending] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const pathname = usePathname();
@@ -34,7 +37,7 @@ export default function ChatInputBox({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      if (!prompt.trim() || isSending) return;
+      if (!prompt.trim() || isChatting) return;
       e.preventDefault();
       chatWithAI();
     }
@@ -42,7 +45,7 @@ export default function ChatInputBox({
 
   const chatWithAI = async () => {
     const trimmedPrompt = prompt.trim();
-    if (!trimmedPrompt || !currentSessionId || isSending) return;
+    if (!trimmedPrompt || !currentSessionId || isChatting) return;
 
     const userMessage: Message = {
       id: `temp-${Date.now()}`,
@@ -52,7 +55,7 @@ export default function ChatInputBox({
 
     updateMessages((prev) => [...prev, userMessage]);
     setPrompt("");
-    setIsSending(true);
+    setIsChatting(true);
 
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
@@ -78,7 +81,7 @@ export default function ChatInputBox({
           "If the problem persists, email me at faselgodbcho@gmail.com",
       });
     } finally {
-      setIsSending(false);
+      setIsChatting(false);
     }
   };
 
@@ -96,16 +99,16 @@ export default function ChatInputBox({
 
           <button
             onClick={chatWithAI}
-            disabled={!prompt.trim() || isSending}
+            disabled={!prompt.trim() || isChatting}
             aria-label="Send message"
             className={`absolute bottom-3 right-3 w-9 h-9 rounded-full bg-black/80 flex items-center justify-center transition-opacity
               ${
-                !prompt.trim() || isSending
+                !prompt.trim() || isChatting
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:bg-black/90 cursor-pointer"
               }`}
           >
-            {isSending ? (
+            {isChatting ? (
               <Loader2 className="text-white animate-spin" size={19} />
             ) : (
               <ArrowUp className="text-white" size={19} />
