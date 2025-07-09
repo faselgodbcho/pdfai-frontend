@@ -83,8 +83,9 @@ export default function AccountSettings() {
         }
         toast.success("Email updated!");
         setEmail("");
-      } catch (err: any) {
-        toast.error(err.message || "Failed to update email.");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        toast.error(message || "Failed to update email.");
       } finally {
         setEmailLoading(false);
       }
@@ -142,8 +143,9 @@ export default function AccountSettings() {
         setConfirmPassword("");
 
         router.push("/login");
-      } catch (err: any) {
-        toast.error(err.message || "Failed to update password.");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        toast.error(message || "Failed to update password.");
       } finally {
         setPasswordLoading(false);
       }
@@ -180,8 +182,9 @@ export default function AccountSettings() {
 
       toast.success(data.message || data.details || "Account deleted!");
       router.push("/login");
-    } catch (err: any) {
-      toast.error(err.message || "Failed to delete account.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || "Failed to delete account.");
       console.error(err);
     } finally {
       setDeleteLoading(false);
