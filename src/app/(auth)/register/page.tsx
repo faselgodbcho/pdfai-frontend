@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Register() {
   return (
-    <div className="border rounded-[16px] shadow-xl pt-8 pb-11 px-9 mt-6">
+    <div className="border rounded-[16px] shadow-xl pt-8 pb-11 px-9">
       <AuthForm mode="register" />
     </div>
   );

@@ -20,6 +20,7 @@ interface ChatSessionContextType {
   refreshSessions: () => Promise<void>;
   addSession: (session: Session) => void;
   removeSession: (id: string) => void;
+  resetSessions: () => void;
 }
 
 const ChatSessionContext = createContext<ChatSessionContextType | null>(null);
@@ -54,6 +55,10 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
     }
   }, [accessToken]);
 
+  const resetSessions = () => {
+    setSessions([]);
+  };
+
   const addSession = (session: Session) => {
     setSessions((prev) => [session, ...prev]);
   };
@@ -76,6 +81,7 @@ export function ChatSessionProvider({ children }: { children: ReactNode }) {
         addSession,
         removeSession,
         setSessions,
+        resetSessions,
       }}
     >
       {children}
